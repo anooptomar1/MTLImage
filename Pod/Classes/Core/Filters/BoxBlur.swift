@@ -9,7 +9,7 @@
 import MetalPerformanceShaders
 
 public
-class BoxBlur: MPS {
+class BoxBlur: MTLMPSFilter {
     
     var radius: Float = 0.5 {
         didSet {

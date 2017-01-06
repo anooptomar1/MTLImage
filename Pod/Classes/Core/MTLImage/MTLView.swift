@@ -216,6 +216,8 @@ class MTLMTKView: MTKView {
                                     float4( 1.0,  1.0, 0.0, 1.0),
                                     float4(-1.0, -1.0, 0.0, 1.0),
                                     float4( 1.0, -1.0, 0.0, 1.0) ]
+    
+    let renderingQueue = DispatchQueue(label: "rendering")
 }
 
 extension MTLMTKView: MTKViewDelegate {
@@ -223,28 +225,27 @@ extension MTLMTKView: MTKViewDelegate {
     public func draw(in view: MTKView) {
         
         input?.processIfNeeded()
-        
+                
         guard let commandQueue = input?.context.commandQueue, let texture = input?.texture, let drawable = view.currentDrawable else {
             return
         }
         
-        if texture.width != Int(drawableSize.width) || texture.height != Int(drawableSize.height) {
+        if texture.width != Int(self.drawableSize.width) || texture.height != Int(drawableSize.height) {
             drawableSize = CGSize(width: texture.width, height: texture.height)
             contentSize = drawableSize
             return
         }
         
-
         if let renderPassDescriptor = view.currentRenderPassDescriptor {
-
+            
             renderSemaphore.wait()
             
             let commandBuffer = commandQueue.makeCommandBuffer()
             
             let commandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)
             commandEncoder.setRenderPipelineState(pipeline)
-            commandEncoder.setVertexBuffer(self.vertexBuffer, offset: 0, at: 0)
-            commandEncoder.setVertexBuffer(self.texCoordBuffer, offset: 0, at: 1)
+            commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, at: 0)
+            commandEncoder.setVertexBuffer(texCoordBuffer, offset: 0, at: 1)
             commandEncoder.setFragmentTexture(texture, at: 0)
             commandEncoder.drawPrimitives(type: .triangle , vertexStart: 0, vertexCount: 6, instanceCount: 1)
             commandEncoder.endEncoding()
@@ -252,7 +253,7 @@ extension MTLMTKView: MTKViewDelegate {
             commandBuffer.addCompletedHandler({ (buffer) in
                 self.renderSemaphore.signal()
             })
-
+            
             commandBuffer.present(drawable)
             commandBuffer.commit()
         }

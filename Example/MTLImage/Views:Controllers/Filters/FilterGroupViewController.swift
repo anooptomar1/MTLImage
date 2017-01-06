@@ -70,7 +70,7 @@ class FilterGroupViewController: UIViewController, UITableViewDataSource, UITabl
 
             MTLImage.upload(self.filterGroup, container: container, completion: { (record, error) in
                 if error != nil {
-                    print(error)
+                    print(error ?? "")
                     return
                 }
                 

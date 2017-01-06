@@ -10,7 +10,7 @@ import UIKit
 import  MetalPerformanceShaders
 
 public
-class MPS: MTLFilter {
+class MTLMPSFilter: MTLFilter {
     
     var kernel: MPSKernel!
 

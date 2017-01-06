@@ -54,8 +54,8 @@ extension MTLTexture {
         let bytesPerRow = width * 4
         let imageByteCount: Int = width * height * 4
         
-        let provider = CGDataProvider(dataInfo: nil, data: imageBytes, size: imageByteCount) { (rawPointer, pointer, i) in
-            
+        let provider = CGDataProvider(dataInfo: nil, data: imageBytes, size: imageByteCount) { (rawPointer, data, i) in
+            free(UnsafeMutableRawPointer(mutating: data))
         }
         
         let bitsPerComponent = 8
@@ -76,7 +76,7 @@ extension MTLTexture {
         
         let image = UIImage(cgImage: imageRef!, scale: 0.0, orientation: .up)
         
-        //        free(imageBytes)
+//        free(imageBytes)
         
         return image;
     }

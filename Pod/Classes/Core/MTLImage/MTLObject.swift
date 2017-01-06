@@ -14,18 +14,19 @@ class MTLObject: NSObject, MTLOutput {
 
     public var needsUpdate: Bool = true {
         didSet {
-            if needsUpdate == true {
+            if needsUpdate {
                 for target in targets {
-                    if let object = target as? MTLObject {
-                        object.needsUpdate = true
-                    }
-                    else if let view = target as? MTLView {
-                        view.setNeedsDisplay()
-                    }
+                    (target as? MTLObject)?.setNeedsUpdate()
+                    (target as? MTLView)?.setNeedsDisplay()
                 }
             }
         }
     }
+    
+    func setNeedsUpdate() {
+        needsUpdate = true
+    }
+    
     
     public var continuousUpdate: Bool {
         guard let input = input else {
@@ -36,10 +37,19 @@ class MTLObject: NSObject, MTLOutput {
     
     public func processIfNeeded() {
         
-        if enabled && needsUpdate {
+        if !enabled { return }
+        
+        if needsUpdate {
             update()
             process()
         }
+        else if let input = input {
+            if input.needsUpdate {
+                update()
+                process()
+            }
+        }
+        
         
     }
     

@@ -10,7 +10,7 @@ import UIKit
 import MetalPerformanceShaders
 
 public
-class Histogram1: MPS {
+class Histogram1: MTLMPSFilter {
     
     var histogramInfo: MPSImageHistogramInfo = MPSImageHistogramInfo(numberOfHistogramEntries: 256, histogramForAlpha: true, minPixelValue: float4(0, 0, 0, 0), maxPixelValue: float4(1, 1, 1, 1))
     var histogramInfoPointer: UnsafePointer<MPSImageHistogramInfo>!

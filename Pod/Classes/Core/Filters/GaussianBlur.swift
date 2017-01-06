@@ -10,7 +10,7 @@ import UIKit
 import MetalPerformanceShaders
 
 public
-class GaussianBlur: MPS {
+class GaussianBlur: MTLMPSFilter {
  
     var sigma: Float = 0.5 {
         didSet {

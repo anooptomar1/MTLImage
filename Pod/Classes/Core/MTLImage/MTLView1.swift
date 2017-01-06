@@ -257,12 +257,10 @@ class MTLView1: UIView, MTLOutput, UIScrollViewDelegate, UIGestureRecognizerDele
     
     func redraw() {
         
-        context.semaphore.wait()
-        
+
         context.processingQueue.async {
             
             guard let tex = self.input?.texture else {
-                self.context.semaphore.signal()
                 return
             }
             
@@ -287,8 +285,6 @@ class MTLView1: UIView, MTLOutput, UIScrollViewDelegate, UIGestureRecognizerDele
                 
                 commandBuffer.addCompletedHandler({ (commandBuffer) in
                     self.currentDrawable = nil
-                    self.context.semaphore.signal()
-                    //                                self.context.source?.didFinishProcessing()
                 })
                 
                 commandBuffer.present(drawable)

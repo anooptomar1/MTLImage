@@ -10,7 +10,7 @@ import UIKit
 import MetalPerformanceShaders
 
 public
-class Dilate: MPS {
+class Dilate: MTLMPSFilter {
     
     var dilateValues: UnsafePointer<Float>!
     

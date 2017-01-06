@@ -182,8 +182,4 @@ class MTLPicture: NSObject, MTLInput {
         }
     }
     
-    
-    public func didFinishProcessing() {
-        context.semaphore.signal()
-    }
 }

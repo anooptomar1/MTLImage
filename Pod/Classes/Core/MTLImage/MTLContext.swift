@@ -19,7 +19,8 @@ class MTLContext: NSObject {
     var processingSize: CGSize!
     var processingQueue: DispatchQueue!    
     var needsUpdate: Bool = true
-    let semaphore = DispatchSemaphore(value: 3)
+    
+    var semaphore = DispatchSemaphore(value: 1)
     
     var source: MTLInput?
     var output: MTLOutput?
@@ -56,9 +57,6 @@ class MTLContext: NSObject {
         
         self.commandQueue = self.device.makeCommandQueue()
         self.processingQueue = DispatchQueue(label: "MTLImageProcessQueue")
-//            DispatchQueue(label: "MTLImageProcessQueue", attributes: DispatchQueueAttributes.concurrent)
-        
-        refreshCurrentCommandBuffer()
     }
     
     func loadLibrary() {
@@ -91,11 +89,6 @@ class MTLContext: NSObject {
         }
         
         return chain
-    }
-    
-    var currentCommandBuffer: MTLCommandBuffer!
-    func refreshCurrentCommandBuffer() {
-        currentCommandBuffer = commandQueue.makeCommandBuffer()
     }
 
 }

@@ -51,52 +51,54 @@ class MTLImage: NSObject {
     #if !(TARGET_OS_SIMULATOR)
     
     public static var filters: [String] = [
-         "Blend",
-         "Box Blur",
-         "Brightness",
-         "Buffer",
-         "Contrast",
-         "Crop",
-         "Cross Hatch",
-         "Dilate",
-         "Emboss",
-         "Exposure",
-         "Gaussian Blur",
-         "Haze",
-         "Highlight/Shadow",
-         "Histogram",
-         "Hue",
-         "Invert",
-         "Kuwahara",
-         "Lanczos Scale",
-         "Lens Flare",
-         "Levels",
-         "Luminance Threshold",
-         "Mask",
-         "Perlin Noise",
-         "Pixellate",
-         "Polka Dot",
-         "Saturation",
-         "Scatter",
-         "Sketch",
-         "Sobel Edge Detection",
-         "Sharpen",
-         "Tent",
-         "Tone Curve",
-         "Toon",
-         "Transform",
-         "Unsharp Mask",
-         "Vignette",
-         "Voronoi",
-         "Water",
-         "White Balance",
-         "XY Derivative"
+        "Annotation",
+        "Blend",
+        "Box Blur",
+        "Brightness",
+        "Buffer",
+        "Contrast",
+        "Crop",
+        "Cross Hatch",
+        "Dilate",
+        "Emboss",
+        "Exposure",
+        "Gaussian Blur",
+        "Haze",
+        "Highlight/Shadow",
+        "Histogram",
+        "Hue",
+        "Invert",
+        "Kuwahara",
+        "Lanczos Scale",
+        "Lens Flare",
+        "Levels",
+        "Luminance Threshold",
+        "Mask",
+        "Perlin Noise",
+        "Pixellate",
+        "Polka Dot",
+        "Saturation",
+        "Scatter",
+        "Sketch",
+        "Sobel Edge Detection",
+        "Sharpen",
+        "Tent",
+        "Tone Curve",
+        "Toon",
+        "Transform",
+        "Unsharp Mask",
+        "Vignette",
+        "Voronoi",
+        "Water",
+        "White Balance",
+        "XY Derivative"
     ]
     
     public class func filter(_ name: String) throws -> MTLObject? {
         switch name.lowercased() {
         
             // Core
+            case "annotation"                     : return Annotation()
             case "blend"                          : return Blend()
             case "box blur"                       : return BoxBlur()
             case "brightness"                     : return Brightness()
@@ -260,4 +262,45 @@ public func > (left: MTLInput, right: MTLOutput) {
 //    MARK: - Error Handling
 enum MTLError: Error {
     case invalidFilterName
+}
+
+
+
+
+
+// MARK: - Debug Tools
+
+extension MTLImage {
+    
+    public static func printContext(_ object: MTLObject) {
+        MTLImage.printContext(object, verbose: false)
+    }
+    
+    public static func printContext(_ object: MTLObject, verbose: Bool) {
+
+        var description = ""
+        
+        if let source = object.source {
+            description += source.title
+            if verbose {
+                description += (source.texture != nil ? " (valid texture)" : " (texture nil)")
+            }
+            description += " --> "
+        }
+        
+        for object in object.context.filterChain {
+            description += object.title
+            if verbose {
+                description += (object.texture != nil ? " (valid texture)" : " (texture nil)")
+            }
+            description += " --> "
+        }
+        
+        if let output = object.context.output {
+            description += output.title
+        }
+        
+        print(description)
+    }
+    
 }

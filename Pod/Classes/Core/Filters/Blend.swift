@@ -130,6 +130,7 @@ class Blend: MTLFilter {
     
     public init() {
         super.init(functionName: "blend")
+        
         title = "Blend"
         uniforms.mix = 1.0 - mix
         
@@ -151,9 +152,19 @@ class Blend: MTLFilter {
     
     override func update() {
         if self.input == nil { return }
+            
         uniforms.mix = mix
         uniforms.blendMode = Float(blendMode)
         updateUniforms(uniforms: uniforms)
+        
+    }
+    
+    override public var needsUpdate: Bool {
+        didSet {
+            if texture == nil {
+                texture = input?.texture
+            }
+        }
     }
     
     override func configureCommandEncoder(_ commandEncoder: MTLComputeCommandEncoder) {
