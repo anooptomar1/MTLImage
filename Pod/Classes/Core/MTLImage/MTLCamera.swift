@@ -399,7 +399,7 @@ class MTLCamera: NSObject {
         session.commitConfiguration()
     }
     
-    public func flipCamera() {
+    public func flip() {
         capturePosition = (capturePosition == .front) ? .back : .front
     }
     
@@ -433,6 +433,18 @@ class MTLCamera: NSObject {
     }
     
     /* Exposure */
+    
+    public var exposureMode: AVCaptureExposureMode = .autoExpose {
+        didSet {
+            guard captureDevice.exposureMode != exposureMode else { return }
+            guard captureDevice.isExposureModeSupported(exposureMode) == true else { return }
+            
+            applyCameraSetting {
+                self.captureDevice.exposureMode = exposureMode
+            }
+        }
+    }
+    
     public func setExposureAuto() {
         applyCameraSetting {
             self.captureDevice.exposureMode = .continuousAutoExposure
@@ -443,15 +455,38 @@ class MTLCamera: NSObject {
     var maxExposureDuration: Float = 0.100 // 0.250
     public var exposureDuration: Float = 0.01 {
         didSet {
+            
+            guard captureDevice.isExposureModeSupported(.custom) else { return }
             if captureDevice.isAdjustingExposure { return }
+            
             applyCameraSetting {
+                
+                self.captureDevice.exposureMode = .continuousAutoExposure
+                
                 let seconds = Tools.convert(self.exposureDuration, oldMin: 0, oldMax: 1,
                                             newMin: self.minExposureDuration, newMax: self.maxExposureDuration)
                 let ed = CMTime(seconds: Double(seconds), preferredTimescale: 1000 * 1000)
+             
                 self.captureDevice.setExposureModeCustomWithDuration(ed, iso: AVCaptureISOCurrent, completionHandler: nil)
             }
         }
     }
+    
+    public var exposurePointOfInterest: CGPoint = .zero {
+        didSet {
+            
+            guard captureDevice.isExposurePointOfInterestSupported == true else { return }
+            
+            focusMode = .autoFocus
+            exposureMode = .autoExpose
+            
+            applyCameraSetting {
+                self.captureDevice.exposurePointOfInterest = exposurePointOfInterest
+            }
+        }
+    }
+
+    
     
     /* ISO */
     public func setISOAuto() {
@@ -465,7 +500,10 @@ class MTLCamera: NSObject {
     let maxIso: Float  = 500.0 //1200.0
     public var iso: Float! {
         didSet {
+            
+            guard captureDevice.isExposureModeSupported(.custom) else { return }
             if captureDevice.isAdjustingExposure { return }
+            
             applyCameraSetting {
                 let value = Tools.convert(self.iso, oldMin: 0, oldMax: 1, newMin: self.minIso, newMax: self.maxIso)
                 self.captureDevice.setExposureModeCustomWithDuration(AVCaptureExposureDurationCurrent, iso: value, completionHandler: nil)
@@ -474,7 +512,16 @@ class MTLCamera: NSObject {
     }
     
     /* Focus */
-    public var focusMode: AVCaptureFocusMode = .autoFocus
+    public var focusMode: AVCaptureFocusMode = .autoFocus {
+        didSet {
+            guard captureDevice.focusMode != focusMode else { return }
+
+            applyCameraSetting {
+                self.captureDevice.focusMode = focusMode
+            }
+        }
+    }
+    
     public func setFocusAuto() {
         applyCameraSetting {
             self.captureDevice.focusMode = .autoFocus
@@ -484,8 +531,23 @@ class MTLCamera: NSObject {
         didSet {
             if captureDevice.isAdjustingFocus { return }
             if capturePosition == .front { return }
+            
             applyCameraSetting {
                 self.captureDevice.setFocusModeLockedWithLensPosition(self.lensPosition, completionHandler: nil)
+            }
+        }
+    }
+    
+    public var focusPointOfInterest: CGPoint = .zero {
+        didSet {
+            
+            guard captureDevice.isFocusPointOfInterestSupported == true else { return }
+                        
+            focusMode = .autoFocus
+            exposureMode = .continuousAutoExposure
+            
+            applyCameraSetting {
+                self.captureDevice.focusPointOfInterest = focusPointOfInterest
             }
         }
     }
@@ -547,7 +609,8 @@ extension MTLCamera {
      Returns success                                       */
     
     func applyCameraSetting( _ settings: (() -> ()) ) -> Bool {
-        if !lock() {  return false }
+        
+        if !lock() { return false }
         
         settings()
         
@@ -564,7 +627,6 @@ extension MTLCamera {
     
     func unlock() {
         captureDevice.unlockForConfiguration()
-        
     }
     
 }

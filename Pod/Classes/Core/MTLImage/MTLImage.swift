@@ -73,6 +73,7 @@ class MTLImage: NSObject {
         "Lens Flare",
         "Levels",
         "Luminance Threshold",
+        "Luminance",
         "Mask",
         "Perlin Noise",
         "Pixellate",
@@ -119,6 +120,7 @@ class MTLImage: NSObject {
             case "lanczos scale"                  : return LanczosScale()
             case "lens flare"                     : return LensFlare()
             case "levels"                         : return Levels()
+            case "luminance"                      : return Luminance()
             case "luminance threshold"            : return LuminanceThreshold()
             case "mask"                           : return Mask()
             case "perlin noise"                   : return PerlinNoise()

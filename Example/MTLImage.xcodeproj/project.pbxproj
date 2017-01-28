@@ -17,6 +17,7 @@
 		454CEDC21CB1470600D67A9E /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CEDC11CB1470600D67A9E /* InfoViewController.swift */; };
 		454CEDC41CB1496500D67A9E /* MetadataFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CEDC31CB1496500D67A9E /* MetadataFormatter.swift */; };
 		4556FC861D6F4B95005C1D14 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4556FC851D6F4B95005C1D14 /* TestViewController.swift */; };
+		455C99931E3D17D9006749EA /* Luminance.metal in Sources */ = {isa = PBXBuildFile; fileRef = 455C99921E3D17D9006749EA /* Luminance.metal */; };
 		456DB2021D79B976002DF330 /* ToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456DB2011D79B976002DF330 /* ToggleCell.swift */; };
 		457551351D01BCAC0096D842 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 457551341D01BCAC0096D842 /* CloudKit.framework */; };
 		457FD4CC1DFDA5A900793213 /* Annotation.metal in Sources */ = {isa = PBXBuildFile; fileRef = 457FD4971DFDA5A900793213 /* Annotation.metal */; };
@@ -108,6 +109,7 @@
 		454CEDC11CB1470600D67A9E /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InfoViewController.swift; path = Info/InfoViewController.swift; sourceTree = "<group>"; };
 		454CEDC31CB1496500D67A9E /* MetadataFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MetadataFormatter.swift; path = Info/MetadataFormatter.swift; sourceTree = "<group>"; };
 		4556FC851D6F4B95005C1D14 /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		455C99921E3D17D9006749EA /* Luminance.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Luminance.metal; sourceTree = "<group>"; };
 		456DB2011D79B976002DF330 /* ToggleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleCell.swift; sourceTree = "<group>"; };
 		457551331D01BCA60096D842 /* MTLImage_Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MTLImage_Example.entitlements; sourceTree = "<group>"; };
 		457551341D01BCAC0096D842 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
@@ -290,6 +292,7 @@
 				457FD4AE1DFDA5A900793213 /* Levels.metal */,
 				457FD4AF1DFDA5A900793213 /* LineDetection.metal */,
 				457FD4B01DFDA5A900793213 /* LuminanceThreshold.metal */,
+				455C99921E3D17D9006749EA /* Luminance.metal */,
 				457FD4B21DFDA5A900793213 /* Mask.metal */,
 				457FD4B31DFDA5A900793213 /* Mosaic.metal */,
 				457FD4B41DFDA5A900793213 /* NonMaximumSuppression.metal */,
@@ -504,7 +507,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
@@ -622,7 +625,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		C0922357476923DB742445BB /* [CP] Embed Pods Frameworks */ = {
@@ -652,7 +655,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		F73F3B2E4DF5C350BF5AD997 /* [CP] Copy Pods Resources */ = {
@@ -685,6 +688,7 @@
 				45EB4FD11CADFAAE0018936C /* SettingsCell.swift in Sources */,
 				457FD4E81DFDA5A900793213 /* Mosaic.metal in Sources */,
 				457FD4F21DFDA5A900793213 /* Sketch.metal in Sources */,
+				455C99931E3D17D9006749EA /* Luminance.metal in Sources */,
 				457FD4FC1DFDA5A900793213 /* Water.metal in Sources */,
 				457FD4DE1DFDA5A900793213 /* Histogram.metal in Sources */,
 				457FD4E11DFDA5A900793213 /* Invert.metal in Sources */,
