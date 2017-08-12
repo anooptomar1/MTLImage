@@ -40,7 +40,7 @@ class BoxBlur: MPS {
         (kernel as! MPSImageBox).edgeMode = .clamp
         
         title = "Box Blur"
-        properties = [MTLProperty(key: "radius" , title: "Radius")]
+        properties = [Property(key: "radius" , title: "Radius")]
     }
     
     required public init?(coder aDecoder: NSCoder) {

@@ -21,7 +21,7 @@ class MTLCloudKitManager: NSObject {
         return nil
     }
     
-    func upload(_ filterGroup: MTLFilterGroup, container: CKContainer, completion: ((_ record: CKRecord?, _ error: Error?) -> ())?) {
+    func upload(_ filterGroup: FilterGroup, container: CKContainer, completion: ((_ record: CKRecord?, _ error: Error?) -> ())?) {
         
         let record = filterGroup.ckRecord()
         
@@ -33,11 +33,11 @@ class MTLCloudKitManager: NSObject {
 }
 
 public
-extension MTLFilterGroup {
+extension FilterGroup {
     
     public func ckRecord() -> CKRecord {
         
-        let record = CKRecord(recordType: "MTLFilterGroup")
+        let record = CKRecord(recordType: "FilterGroup")
         
         record["identifier"]  = self.identifier as CKRecordValue
         record["title"]       = self.title as CKRecordValue

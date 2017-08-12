@@ -28,20 +28,35 @@ class Camera: NSObject, Input, AVCaptureVideoDataOutputSampleBufferDelegate, AVC
         
         func device() -> AVCaptureDevice? {
             switch self {
+                
             case .back, .front:
                 return AVCaptureDevice.default(for: .video)
+                
             case .dual, .depth:
-                if #available(iOS 11.0, *) {
-                    return AVCaptureDevice.default(.builtInDualCamera, for: AVMediaType.video, position: .back)
-                } else if #available(iOS 10.0, *) {
-                    return AVCaptureDevice.default(.builtInDuoCamera, for: AVMediaType.video, position: .back)
-                }
+                var deviceType: AVCaptureDevice.DeviceType = .builtInWideAngleCamera
+                if #available(iOS 10.2, *)      { deviceType = .builtInDualCamera }
+                else if #available(iOS 10.0, *) { deviceType = .builtInDuoCamera }
+                else { return nil }
+                return device(for: .video, with: .back, deviceType: deviceType)
+                
             case .telephoto:
                 if #available(iOS 10.0, *) {
-                    return AVCaptureDevice.default(.builtInTelephotoCamera, for: AVMediaType.video, position: .back)
+                    return device(for: .video, with: .back, deviceType: .builtInTelephotoCamera)
                 }
             }
             return nil
+        }
+        
+        private func device(for mediaType: AVMediaType, with position: AVCaptureDevice.Position, deviceType: AVCaptureDevice.DeviceType) -> AVCaptureDevice? {
+            
+            let devices = AVCaptureDevice.devices(for: mediaType)
+            return devices.filter({
+                if #available(iOS 10.0, *) {
+                    return $0.deviceType == deviceType && $0.position == position
+                } else {
+                    return $0.position == position
+                }
+            }).first
         }
         
         var capturePosition: AVCaptureDevice.Position {
@@ -67,7 +82,7 @@ class Camera: NSObject, Input, AVCaptureVideoDataOutputSampleBufferDelegate, AVC
     public var delegate: MTLCameraDelegate?
     
     /* MTLFilters added to this group will filter the camera output */
-    public var filterGroup = MTLFilterGroup()
+    public var filterGroup = FilterGroup()
     
     /* Capture a still photo from the capture device. */
 //    TODO: Add intermediate thumbnail captured photo callback
@@ -96,7 +111,7 @@ class Camera: NSObject, Input, AVCaptureVideoDataOutputSampleBufferDelegate, AVC
 //                let orientedImage = UIImage(cgImage: image.cgImage!, scale: 0.0, orientation: .up)
                 
                 // Filter original image
-                let filterCopy = self?.filterGroup.copy() as! MTLFilterGroup
+                let filterCopy = self?.filterGroup.copy() as! FilterGroup
                 guard let filteredImage = filterCopy.filter(image) else {
                     completion(nil, error)
                     return
@@ -269,31 +284,10 @@ class Camera: NSObject, Input, AVCaptureVideoDataOutputSampleBufferDelegate, AVC
         mode = (mode == .front) ? .back : .front
     }
     
-//    public var mode: Mode = .back {
-    public var mode: Mode = .depth {
+    public var mode: Mode = .back {
+//    public var mode: Mode = .depth {
         didSet {
-            
             setupAVDevice()
-            
-//            guard let device = mode.device(), let session = session else { return }
-//            guard let input = try? AVCaptureDeviceInput(device: device) else { return }
-//            guard session.canAddInput(input) else { return }
-//
-//            session.beginConfiguration()
-//            session.removeInput(deviceInput)
-//
-//            deviceInput = input
-//            session.addInput(deviceInput)
-//
-//            if let depthDataOutput = depthDataOutput {
-//                if mode == .depth {
-//                    if session.canAddOutput(depthDataOutput) { session.addOutput(depthDataOutput) }
-//                } else {
-//                    session.removeOutput(depthDataOutput)
-//                }
-//            }
-//
-//            session.commitConfiguration()
         }
     }
     
@@ -455,12 +449,15 @@ class Camera: NSObject, Input, AVCaptureVideoDataOutputSampleBufferDelegate, AVC
         let threadgroups = MTLSizeMake(videoTexture.width / threadgroupCounts.width,
                                        videoTexture.height / threadgroupCounts.height, 1)
         
-        let commandBuffer = context.commandQueue.makeCommandBuffer()
+        
+        guard let commandBuffer = context.commandQueue.makeCommandBuffer(),
+            let commandEncoder = commandBuffer.makeComputeCommandEncoder() else { return }
+        
+        
         commandBuffer.addCompletedHandler { (commandBuffer) in
             self.needsUpdate = false
         }
         
-        let commandEncoder = commandBuffer.makeComputeCommandEncoder()
         commandEncoder.setComputePipelineState(pipeline)
         
         commandEncoder.setTexture(videoTexture, index: 0)
@@ -482,13 +479,13 @@ class Camera: NSObject, Input, AVCaptureVideoDataOutputSampleBufferDelegate, AVC
         }
     }
     
-    public var context: MTLContext {
+    public var context: Context {
         get {
             return internalContext
         }
     }
     
-    public var commandBuffer: MTLCommandBuffer {
+    public var commandBuffer: MTLCommandBuffer? {
         return context.commandQueue.makeCommandBuffer()
     }
     
@@ -644,7 +641,7 @@ class Camera: NSObject, Input, AVCaptureVideoDataOutputSampleBufferDelegate, AVC
     private var internalTargets = [Output]()
     private var internalTexture: MTLTexture!
     private var videoTexture: MTLTexture!
-    var internalContext: MTLContext = MTLContext()
+    var internalContext: Context = Context()
     var pipeline: MTLComputePipelineState!
     var kernelFunction: MTLFunction!
     

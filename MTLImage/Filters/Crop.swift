@@ -17,7 +17,7 @@ struct CropUniforms: Uniforms {
 }
 
 public
-class Crop: MTLFilter {
+class Crop: Filter {
     
     var uniforms = CropUniforms()
    
@@ -42,8 +42,8 @@ class Crop: MTLFilter {
     public init() {
         super.init(functionName: "crop")
         title = "Crop"
-        properties = [MTLProperty(key: "cropRegion", title: "Crop Region", propertyType: .rect),
-                      MTLProperty(key: "fit"       , title: "Fit"        , propertyType: .bool)]
+        properties = [Property(key: "cropRegion", title: "Crop Region", propertyType: .rect),
+                      Property(key: "fit"       , title: "Fit"        , propertyType: .bool)]
         
         update()
     }
@@ -79,12 +79,13 @@ class Crop: MTLFilter {
         if newWidth <= 1 || newHeight <= 1 { return }
         
         let textureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm, width: newWidth, height: newHeight, mipmapped: false)
-        let newTexture = device.makeTexture(descriptor: textureDescriptor)
+        
+        guard let newTexture = device.makeTexture(descriptor: textureDescriptor) else { return }
         
         let commandBuffer = self.context.commandQueue.makeCommandBuffer()
-        let blitCommandEncoder = commandBuffer.makeBlitCommandEncoder()
+        let blitCommandEncoder = commandBuffer?.makeBlitCommandEncoder()
         
-        blitCommandEncoder.copy(from: inputTexture,
+        blitCommandEncoder?.copy(from: inputTexture,
                                            sourceSlice: 0,
                                            sourceLevel: 0,
                                            sourceOrigin: MTLOrigin(x: newX, y: newY, z: 0),
@@ -94,18 +95,10 @@ class Crop: MTLFilter {
                                            destinationLevel: 0,
                                            destinationOrigin: MTLOrigin(x: 0, y: 0, z: 0))
         
-        blitCommandEncoder.endEncoding()
-        commandBuffer.commit()
+        blitCommandEncoder?.endEncoding()
+        commandBuffer?.commit()
         
         texture = newTexture
     }
-    
-//    public override var texture: MTLTexture? {
-//        get {
-//            if texture == nil {
-//                updateCroppedTexture()
-//            }
-//            return texture
-//        }
-//    }
+
 }

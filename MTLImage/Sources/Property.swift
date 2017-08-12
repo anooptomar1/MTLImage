@@ -1,5 +1,5 @@
 //
-//  MTLProperty.swift
+//  Property.swift
 //  Pods
 //
 //  Created by Mohssen Fathi on 4/1/16.
@@ -9,23 +9,52 @@
 import UIKit
 
 public
-enum MTLPropertyType: Int {
-    case value = 0,
-    bool,
-    point,
-    rect,
-    color,
-    selection,
-    image
+struct Property<C, V> {
+    
+    public var title: String
+    public var keyPath: ReferenceWritableKeyPath<C, V>
+    public var range: (Float, Float, Float) = (0.0, 0.5, 1.0)
+ 
+    public init(title: String, keyPath: ReferenceWritableKeyPath<C, V>) {
+        self.title = title
+        self.keyPath = keyPath
+    }
 }
 
 public
-class MTLProperty: NSObject, NSCoding {
+extension Filter {
+    
+    // Make an optional?
+    public subscript<C, V>(property: Property<C, V>) -> V {
+        get {
+            return (self as! C)[keyPath: property.keyPath]
+        }
+        set {
+            (self as! C)[keyPath: property.keyPath] = newValue
+        }
+    }
+    
+}
+
+
+public
+class Property1: NSObject, NSCoding {
+
+    public
+    enum PropertyType: Int {
+        case value = 0,
+        bool,
+        point,
+        rect,
+        color,
+        selection,
+        image
+    }
     
     public var title: String!
     public var key: String!
     public var keyPath: AnyKeyPath!
-    public var propertyType: MTLPropertyType!
+    public var propertyType: PropertyType!
     public var minimumValue: Float = 0.0
     public var defaultValue: Float = 0.5
     public var maximumValue: Float = 1.0
@@ -45,7 +74,7 @@ class MTLProperty: NSObject, NSCoding {
         self.propertyType = .value
     }
     
-    init(key: String, title: String, propertyType: MTLPropertyType) {
+    init(key: String, title: String, propertyType: PropertyType) {
         super.init()
         self.key = key
         self.title = title
@@ -74,7 +103,7 @@ class MTLProperty: NSObject, NSCoding {
         maximumValue = aDecoder.decodeFloat(forKey: "maximumValue")
         defaultValue = aDecoder.decodeFloat(forKey: "defaultValue")
         selectionItems = aDecoder.decodeObject(forKey: "selectionItems") as? [Int: String]
-        propertyType = MTLPropertyType(rawValue: aDecoder.decodeInteger(forKey: "propertyType"))
+        propertyType = PropertyType(rawValue: aDecoder.decodeInteger(forKey: "propertyType"))
     }
     
 }

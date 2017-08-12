@@ -1,5 +1,5 @@
 //
-//  MTLContext.swift
+//  Context.swift
 //  Pods
 //
 //  Created by Mohammad Fathi on 3/10/16.
@@ -9,10 +9,10 @@
 import UIKit
 
 // Set to true to use compiled shaders
-let useMetalib = false
+let useMetalib = true
 
 public
-class MTLContext: NSObject {
+class Context: NSObject {
     
     var device: MTLDevice!
     var commandQueue: MTLCommandQueue!

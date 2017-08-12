@@ -46,7 +46,7 @@ extension UIImage {
         let textureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm, width: width, height: height, mipmapped: false)
         let texture = device.makeTexture(descriptor: textureDescriptor)
         let region = MTLRegionMake2D(0, 0, width, height)
-        texture.replace(region: region, mipmapLevel: 0, withBytes: data!, bytesPerRow: bytesPerRow)
+        texture?.replace(region: region, mipmapLevel: 0, withBytes: data!, bytesPerRow: bytesPerRow)
         
         free(data)
         

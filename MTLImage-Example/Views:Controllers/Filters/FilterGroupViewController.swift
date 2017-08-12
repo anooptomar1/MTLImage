@@ -15,7 +15,7 @@ class FilterGroupViewController: UIViewController, UITableViewDataSource, UITabl
 
     @IBOutlet weak var tableView: UITableView!
     var settingsViewController: SettingsViewController?
-    var filterGroup: MTLFilterGroup!
+    var filterGroup: FilterGroup!
     var selectedFilter: MTLObject!
     var actionButton: UIBarButtonItem!
     var isNewFilter: Bool = false
@@ -95,14 +95,14 @@ class FilterGroupViewController: UIViewController, UITableViewDataSource, UITabl
     func save() {
         
         let saveBlock = {
-            MTLImage.save(self.filterGroup, completion: { (success) in
-                let message = success ? "Saved" : "Couldn't Save"
-                let alertView = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-                self.present(alertView, animated: true, completion: {
-                    sleep(UInt32(1.0))
-                    self.dismiss(animated: true, completion: nil)
-                })
-            })
+//            MTLImage.save(self.filterGroup, completion: { (success) in
+//                let message = success ? "Saved" : "Couldn't Save"
+//                let alertView = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+//                self.present(alertView, animated: true, completion: {
+//                    sleep(UInt32(1.0))
+//                    self.dismiss(animated: true, completion: nil)
+//                })
+//            })
         }
         
         if isNewFilter {
@@ -179,10 +179,10 @@ class FilterGroupViewController: UIViewController, UITableViewDataSource, UITabl
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .default) { (action) in
-            MTLImage.save(self.filterGroup, completion: { (success) in
-                self.dismiss(animated: true, completion: nil)
-                completion?()
-            })
+//            MTLImage.save(self.filterGroup, completion: { (success) in
+//                self.dismiss(animated: true, completion: nil)
+//                completion?()
+//            })
         }
         
         alert.addAction(cancelAction)
@@ -225,10 +225,10 @@ class FilterGroupViewController: UIViewController, UITableViewDataSource, UITabl
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .default) { (action) in
-            MTLImage.save(self.filterGroup, completion: { (success) in
-                self.dismiss(animated: true, completion: nil)
-                completion?("", "")
-            })
+//            MTLImage.save(self.filterGroup, completion: { (success) in
+//                self.dismiss(animated: true, completion: nil)
+//                completion?("", "")
+//            })
         }
         
         alert.addAction(cancelAction)
@@ -286,10 +286,10 @@ class FilterGroupViewController: UIViewController, UITableViewDataSource, UITabl
         }
         else {
             selectedFilter = filterGroup.filters[indexPath.row]
-            if selectedFilter is MTLFilter {
+            if selectedFilter is Filter {
                 performSegue(withIdentifier: "settings", sender: self)
             }
-            else if selectedFilter is MTLFilterGroup {
+            else if selectedFilter is FilterGroup {
                 performSegue(withIdentifier: "filterGroup", sender: self)
             }
         }
@@ -369,7 +369,7 @@ class FilterGroupViewController: UIViewController, UITableViewDataSource, UITabl
         
         if segue.identifier == "settings" {
             settingsViewController = segue.destination as? SettingsViewController
-            settingsViewController?.filter = selectedFilter as! MTLFilter
+            settingsViewController?.filter = selectedFilter as! Filter
         }
         else if segue.identifier == "addFilter" {
             let navigationController = segue.destination as! UINavigationController
@@ -378,7 +378,7 @@ class FilterGroupViewController: UIViewController, UITableViewDataSource, UITabl
         }
         else if segue.identifier == "filterGroup" {
             let filterGroupViewController = segue.destination as! FilterGroupViewController
-            filterGroupViewController.filterGroup = selectedFilter as! MTLFilterGroup
+            filterGroupViewController.filterGroup = selectedFilter as! FilterGroup
         }
     }
 

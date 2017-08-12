@@ -32,7 +32,7 @@ class MTLDataManager: NSObject {
         reloadSavedRecords()
     }
     
-    func remove(_ filterGroup: MTLFilterGroup, completion: ((_ success: Bool) -> ())?) {
+    func remove(_ filterGroup: FilterGroup, completion: ((_ success: Bool) -> ())?) {
         if let record = filterGroupRecordWithIdentifier(filterGroup.identifier) {
             managedObjectContext.delete(record)
             saveContext()
@@ -43,7 +43,7 @@ class MTLDataManager: NSObject {
         }
     }
     
-    func save(_ filterGroup: MTLFilterGroup, completion: ((_ success: Bool) -> ())?) {
+    func save(_ filterGroup: FilterGroup, completion: ((_ success: Bool) -> ())?) {
         if let record = filterGroupRecordWithIdentifier(filterGroup.identifier) {
             updateFilterGroupRecord(record, filterGroup: filterGroup)
             completion?(true)
@@ -55,8 +55,8 @@ class MTLDataManager: NSObject {
         completion?(true)
     }
     
-    func savedFilterGroups() -> [MTLFilterGroup] {
-        var filterGroups = [MTLFilterGroup]()
+    func savedFilterGroups() -> [FilterGroup] {
+        var filterGroups = [FilterGroup]()
         for filterGroupRecord in savedRecords! {
             filterGroups.append(filterGroup(filterGroupRecord))
         }
@@ -77,15 +77,15 @@ class MTLDataManager: NSObject {
     
     //    MARK: - Filter -> Record
     
-    func updateFilterGroupRecord(_ filterGroupRecord: MTLFilterGroupRecord, filterGroup: MTLFilterGroup) {
+    func updateFilterGroupRecord(_ filterGroupRecord: MTLFilterGroupRecord, filterGroup: FilterGroup) {
         filterGroupRecord.title = filterGroup.title
         filterGroupRecord.identifier = filterGroup.identifier
         
         var filterRecords = [MTLFilterRecord]()
         for filter in filterGroup.filters {
 //            Need to change this to add subfiltergroups
-            if filter is MTLFilter {
-                filterRecords.append(filterRecord(filter as! MTLFilter))
+            if filter is Filter {
+                filterRecords.append(filterRecord(filter as! Filter))
             }
         }
         filterGroupRecord.filters = NSOrderedSet(array: filterRecords)
@@ -93,7 +93,7 @@ class MTLDataManager: NSObject {
         saveContext()
     }
     
-    func filterGroupRecord(_ filterGroup: MTLFilterGroup) -> MTLFilterGroupRecord {
+    func filterGroupRecord(_ filterGroup: FilterGroup) -> MTLFilterGroupRecord {
         let entityDescription = NSEntityDescription.entity(forEntityName: "MTLFilterGroupRecord", in: managedObjectContext)
         let filterGroupRecord = MTLFilterGroupRecord(entity: entityDescription!, insertInto: managedObjectContext)
         
@@ -103,8 +103,8 @@ class MTLDataManager: NSObject {
         var filterRecords = [MTLFilterRecord]()
         for filter in filterGroup.filters {
 //            Need to change this to add subfiltergroups
-            if filter is MTLFilter {
-                filterRecords.append(filterRecord(filter as! MTLFilter))
+            if filter is Filter {
+                filterRecords.append(filterRecord(filter as! Filter))
             }
         }
         filterGroupRecord.filters = NSOrderedSet(array: filterRecords)
@@ -112,7 +112,7 @@ class MTLDataManager: NSObject {
         return filterGroupRecord
     }
     
-    func filterRecord(_ filter: MTLFilter) -> MTLFilterRecord {
+    func filterRecord(_ filter: Filter) -> MTLFilterRecord {
         let entityDescription = NSEntityDescription.entity(forEntityName: "MTLFilterRecord", in: managedObjectContext)
         let filterRecord = MTLFilterRecord(entity: entityDescription!, insertInto: managedObjectContext)
         
@@ -178,8 +178,8 @@ class MTLDataManager: NSObject {
     
     // MARK: - Record -> Filter
     
-    func filterGroup(_ filterGroupRecord: MTLFilterGroupRecord) -> MTLFilterGroup {
-        let filterGroup = MTLFilterGroup()
+    func filterGroup(_ filterGroupRecord: MTLFilterGroupRecord) -> FilterGroup {
+        let filterGroup = FilterGroup()
         filterGroup.title = filterGroupRecord.title!
         filterGroup.identifier = filterGroupRecord.identifier!
         
@@ -192,9 +192,9 @@ class MTLDataManager: NSObject {
         return filterGroup
     }
     
-    func filter(_ filterRecord: MTLFilterRecord) -> MTLFilter? {
+    func filter(_ filterRecord: MTLFilterRecord) -> Filter? {
                 
-        guard let filter = try! MTLImage.filter((filterRecord.title?.lowercased())!) as? MTLFilter else {
+        guard let filter = try! MTLImage.filter((filterRecord.title?.lowercased())!) as? Filter else {
             print("Might be a MTLFitlerGroup")
             return nil
         }
