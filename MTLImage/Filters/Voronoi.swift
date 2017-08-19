@@ -30,9 +30,10 @@ class Voronoi: Filter {
     public init() {
         super.init(functionName: "voronoi")
         title = "Voronoi"
-        properties = [Property(key: "animate", title: "Animate", propertyType: .bool),
-                      Property(key: "size"   , title: "Density")]
-        update()
+        properties = [
+            Property<Voronoi, Bool>(title: "Animate", keyPath: \Voronoi.animate),
+            Property<Voronoi, Float>(title: "Density", keyPath: \Voronoi.size)
+        ]
     }
     
     public override func process() {
@@ -40,11 +41,7 @@ class Voronoi: Filter {
         super.process()
         needsUpdate = true
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         

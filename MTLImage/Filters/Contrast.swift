@@ -26,14 +26,12 @@ class Contrast: Filter {
     public init() {
         super.init(functionName: "contrast")
         title = "Contrast"
-        properties = [Property(key: "contrast", title: "Contrast")]
+        properties = [
+            Property<Contrast, Float>(title: "Contrast", keyPath: \Contrast.contrast)
+        ]
         update()
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if input == nil { return }
         uniforms.contrast = Tools.convert(contrast, oldMin: 0.0, oldMid: 0.5, oldMax: 1.0, newMin: 0.0, newMid: 1.0, newMax: 4.0)

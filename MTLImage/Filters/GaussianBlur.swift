@@ -33,12 +33,8 @@ class GaussianBlur: MPS {
     
     func commonInit() {
         title = "Gaussian Blur"
-        properties = [Property(key: "sigma", title: "Sigma")]
+        properties = [Property<GaussianBlur, Float>(title: "Sigma", keyPath: \GaussianBlur.sigma)]
         sigma = 0.5
     }
 
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
 }

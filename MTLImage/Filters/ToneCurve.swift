@@ -131,29 +131,26 @@ class ToneCurve: Filter {
         blueCurve = getPreparedSplineCurve(bluePoints)
         compositeCurve = getPreparedSplineCurve(compositePoints)
         
-        properties = //[]
-                     [Property(key: "compositeMin", title: "Composite Min"),
-                      Property(key: "compositeMid", title: "Composite Mid"),
-                      Property(key: "compositeMax", title: "Composite Max"),
-                      Property(key: "redMid"      , title: "Red"),
-                      Property(key: "blueMid"     , title: "Blue"),
-                      Property(key: "greenMid"    , title: "Green")]
+        properties = [
+            Property<ToneCurve, Float>(title: "Composite Min", keyPath: \ToneCurve.compositeMin),
+            Property<ToneCurve, Float>(title: "Composite Mid", keyPath: \ToneCurve.compositeMid),
+            Property<ToneCurve, Float>(title: "Composite Max", keyPath: \ToneCurve.compositeMax),
+            Property<ToneCurve, Float>(title: "Red", keyPath: \ToneCurve.redMid),
+            Property<ToneCurve, Float>(title: "Blue", keyPath: \ToneCurve.blueMid),
+            Property<ToneCurve, Float>(title: "Green", keyPath: \ToneCurve.greenMid),
+        ]
         
         update()
     }
     
-    override func updatePropertyValues() {
-        super.updatePropertyValues()
-        propertyValues["compositeCurve"] = compositeCurve
-        propertyValues["redCurve"] = redCurve
-        propertyValues["greenCurve"] = greenCurve
-        propertyValues["blueCurve"] = blueCurve
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+//    override func updatePropertyValues() {
+//        super.updatePropertyValues()
+//        propertyValues["compositeCurve"] = compositeCurve
+//        propertyValues["redCurve"] = redCurve
+//        propertyValues["greenCurve"] = greenCurve
+//        propertyValues["blueCurve"] = blueCurve
+//    }
+
     public override func reset() {
         redPoints   = [CGPoint]()
         greenPoints = [CGPoint]()

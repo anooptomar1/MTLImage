@@ -27,14 +27,9 @@ class LuminanceThreshold: Filter {
     public init() {
         super.init(functionName: "luminanceThreshold")
         title = "Luminance Threshold"
-        properties = [Property(key: "threshold", title: "Threshold")]
-        update()
+        properties = [Property<LuminanceThreshold, Float>(title: "Threshold", keyPath: \LuminanceThreshold.threshold)]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         uniforms.threshold = threshold

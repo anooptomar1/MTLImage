@@ -27,7 +27,9 @@ class Saturation: Filter {
     public init() {
         super.init(functionName: "saturation")
         title = "Saturation"
-        properties = [Property<Saturation, Float>(title: "Saturation", keyPath: \Saturation.saturation)]
+        properties = [Property(key: "saturation", title: "Saturation")]
+        
+        update()
     }
 
     override func update() {

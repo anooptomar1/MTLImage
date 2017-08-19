@@ -27,14 +27,10 @@ class PerlinNoise: Filter {
     public init() {
         super.init(functionName: "perlinNoise")
         title = "Perlin Noise"
-        properties = [Property(key: "scale", title: "Scale")]
+        properties = [Property<PerlinNoise, Float>(title: "Scale", keyPath: \PerlinNoise.scale)]
         update()
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         uniforms.scale = scale * 20

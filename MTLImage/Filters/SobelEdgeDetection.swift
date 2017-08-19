@@ -27,14 +27,10 @@ class SobelEdgeDetection: Filter {
     public init() {
         super.init(functionName: "sobelEdgeDetection")
         title = "Sobel Edge Detection"
-        properties = [Property(key: "edgeStrength", title: "Edge Strength")]
+        properties = [Property<SobelEdgeDetection, Float>(title: "Edge Strength", keyPath: \SobelEdgeDetection.edgeStrength)]
         update()
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         uniforms.edgeStrength = edgeStrength * 3.0 + 0.2

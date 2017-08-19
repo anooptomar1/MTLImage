@@ -26,20 +26,18 @@ class ColorSelection: Filter {
     public init() {
         super.init(functionName: "colorSelection")
         title = "Color Selection"
-        properties = [Property(key: "red"    , title: "Red"    ),
-                      Property(key: "orange" , title: "Orange" ),
-                      Property(key: "yellow" , title: "Yellow" ),
-                      Property(key: "green"  , title: "Green"  ),
-                      Property(key: "aqua"   , title: "Aqua"   ),
-                      Property(key: "blue"   , title: "Blue"   ),
-                      Property(key: "purple" , title: "Purple" ),
-                      Property(key: "magenta", title: "Magenta")]
+        properties = [
+            Property<ColorSelection, Float>(title: "Red", keyPath: \ColorSelection.red),
+            Property<ColorSelection, Float>(title: "Orange", keyPath: \ColorSelection.orange),
+            Property<ColorSelection, Float>(title: "Yellow", keyPath: \ColorSelection.yellow),
+            Property<ColorSelection, Float>(title: "Green", keyPath: \ColorSelection.green),
+            Property<ColorSelection, Float>(title: "Aqua", keyPath: \ColorSelection.aqua),
+            Property<ColorSelection, Float>(title: "Blue", keyPath: \ColorSelection.blue),
+            Property<ColorSelection, Float>(title: "Purple", keyPath: \ColorSelection.purple),
+            Property<ColorSelection, Float>(title: "Magenta", keyPath: \ColorSelection.magenta)
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         

@@ -48,11 +48,7 @@ class Resize: MPS {
         title = "Resize"
         properties = []
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         super.update()
         

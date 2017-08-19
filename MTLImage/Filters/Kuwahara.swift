@@ -27,14 +27,11 @@ class Kuwahara: Filter {
     public init() {
         super.init(functionName: "kuwahara")
         title = "Kuwahara"
-        properties = [Property(key: "radius", title: "Radius")]
-        update()
+        properties = [
+            Property<Kuwahara, Float>(title: "Radius", keyPath: \Kuwahara.radius)
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         uniforms.radius = round(Tools.convert(radius, oldMin: 0, oldMax: 1, newMin: 1, newMax: 10))

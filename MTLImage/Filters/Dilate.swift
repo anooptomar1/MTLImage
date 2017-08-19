@@ -56,11 +56,11 @@ class Dilate: MPS {
         updateDilateValues(values)
         
         title = "Dilate"
-        properties = [Property(key: "intensity", title: "Intensity"),
-                      Property(key: "width", title: "Width"),
-                      Property(key: "height", title: "Height")]
-        
-        update()
+        properties = [
+            Property<Dilate, Float>(title: "Intensity", keyPath: \Dilate.intensity),
+            Property<Dilate, Float>(title: "Width", keyPath: \Dilate.width),
+            Property<Dilate, Float>(title: "Height", keyPath: \Dilate.height)
+        ]
     }
     
     func updateDilateValues(_ values: UnsafePointer<Float>!) {
@@ -73,9 +73,5 @@ class Dilate: MPS {
         
         kernel = MPSImageDilate(device: context.device, kernelWidth: w, kernelHeight: h, values: dilateValues)
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
 }

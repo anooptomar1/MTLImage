@@ -39,15 +39,12 @@ class NonMaximumSuppression: Filter {
     public init() {
         super.init(functionName: "nonMaximumSuppression")
         title = "Non Maximum Suppression"
-        properties = [Property(key: "lowerThreshold", title: "Lower Threshold"),
-                      Property(key: "upperThreshold", title: "Upper Threshold")]
-        update()
+        properties = [
+            Property<NonMaximumSuppression, Float>(title: "Lower Threshold", keyPath: \NonMaximumSuppression.lowerThreshold),
+            Property<NonMaximumSuppression, Float>(title: "Upper Threshold", keyPath: \NonMaximumSuppression.upperThreshold)
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         
@@ -83,14 +80,9 @@ class NonMaximumSuppressionThreshod: Filter {
     public init() {
         super.init(functionName: "nonMaximumSuppressionThreshold")
         title = "Non Maximum Suppression Threshold"
-        properties = [Property(key: "threshold", title: "Threshold")]
-        update()
+        properties = [Property<NonMaximumSuppressionThreshod, Float>(title: "Threshold", keyPath: \NonMaximumSuppressionThreshod.threshold)]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         uniforms.threshold = threshold/5.0 + 0.01

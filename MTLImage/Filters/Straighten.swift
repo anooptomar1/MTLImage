@@ -28,14 +28,9 @@ class Straighten: Filter {
     public init() {
         super.init(functionName: "angle")
         title = "Straighten"
-        properties = [Property(key: "angle", title: "Angle")]
-        update()
+        properties = [Property<Straighten, Float>(title: "Angle", keyPath: \Straighten.angle)]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         updateUniforms(uniforms: uniforms)

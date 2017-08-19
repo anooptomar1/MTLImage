@@ -16,8 +16,4 @@ class Invert: Filter {
         title = "Invert"
         properties = []
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
 }

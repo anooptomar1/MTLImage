@@ -26,14 +26,9 @@ class Sketch: Filter {
     public init() {
         super.init(functionName: "sketch")
         title = "Sketch"
-        properties = [Property(key: "intensity", title: "Intensity")]
-        update()
+        properties = [Property<Sketch, Float>(title: "Intensity", keyPath: \Sketch.intensity)]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         

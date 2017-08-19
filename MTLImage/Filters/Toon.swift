@@ -34,15 +34,12 @@ class Toon: Filter {
     public init() {
         super.init(functionName: "toon")
         title = "Toon"
-        properties = [Property(key: "threshold"         , title: "Threshold"          ),
-                      Property(key: "quantizationLevels", title: "Quantization Levels")]
-        update()
+        properties = [
+            Property<Toon, Float>(title: "Threshold", keyPath: \Toon.threshold),
+            Property<Toon, Float>(title: "Quantization Levels", keyPath: \Toon.quantizationLevels)
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         uniforms.quantizationLevels = Tools.convert(quantizationLevels, oldMin: 0, oldMax: 1, newMin: 5, newMax: 15)

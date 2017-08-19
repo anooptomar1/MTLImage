@@ -27,12 +27,10 @@ class XYDerivative: Filter {
     public init() {
         super.init(functionName: "xyDerivative")
         title = "XY Derivative"
-        properties = [Property(key: "edgeStrength", title: "Edge Strength")]
+        properties = [
+            Property<XYDerivative, Float>(title: "Edge Strength", keyPath: \XYDerivative.edgeStrength)
+        ]
         update()
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
     }
     
     override func update() {

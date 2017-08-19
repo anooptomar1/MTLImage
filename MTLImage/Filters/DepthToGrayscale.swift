@@ -33,15 +33,11 @@ class DepthToGrayscale: Filter {
         super.init(functionName: "depthToGrayscale")
         title = "Depth To Grayscale"
         properties = [
-            Property(key: "offset", title: "Offset"),
-            Property(key: "range", title: "Range")
+            Property<DepthToGrayscale, Float>(title: "Offset", keyPath: \DepthToGrayscale.offset),
+            Property<DepthToGrayscale, Float>(title: "Range", keyPath: \DepthToGrayscale.range)
         ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         

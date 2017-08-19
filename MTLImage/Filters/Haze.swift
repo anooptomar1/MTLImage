@@ -28,12 +28,10 @@ class Haze: Filter {
     public init() {
         super.init(functionName: "haze")
         title = "Haze"
-        properties = [Property(key: "fade", title: "Fade")]
+        properties = [
+            Property<Haze, Float>(title: "Fade", keyPath: \Haze.fade)
+        ]
         update()
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
     }
     
     override func update() {

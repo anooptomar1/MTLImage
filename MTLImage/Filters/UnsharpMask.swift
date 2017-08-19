@@ -36,14 +36,12 @@ class UnsharpMask: Filter {
         super.init(functionName: "unsharpMask")
         
         title = "Unsharp Mask"
-        properties = [Property(key: "blurRadius", title: "Blur Radius"),
-                      Property(key: "intensity" , title: "Intensity"  ),]
+        properties = [
+            Property<UnsharpMask, Float>(title: "Blur Radius", keyPath: \UnsharpMask.blurRadius),
+            Property<UnsharpMask, Float>(title: "Intensity", keyPath: \UnsharpMask.intensity)
+        ]
         
         update()
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
     }
     
     override func update() {

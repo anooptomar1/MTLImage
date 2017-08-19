@@ -35,7 +35,7 @@ class LanczosScale: MPS {
     func commonInit() {
         
         title = "Lanczos Scale"
-        properties = [Property(key: "scale", title: "Scale")] //,
+        properties = [Property<LanczosScale, Float>(title: "Scale", keyPath: \LanczosScale.scale)] //,
 //                      Property(key: "width", title: "Width"),
 //                      Property(key: "height", title: "Height")]
         
@@ -52,7 +52,4 @@ class LanczosScale: MPS {
         (kernel as! MPSImageLanczosScale).scaleTransform = transformPointer
     }
     
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
 }

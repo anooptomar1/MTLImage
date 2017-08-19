@@ -43,16 +43,13 @@ class HSV: Filter {
     public init() {
         super.init(functionName: "hsv")
         title = "HSV"
-        properties = [Property(key: "hue"       , title: "Hue"),
-                      Property(key: "saturation", title: "Saturation"),
-                      Property(key: "vibrancy"  , title: "Vibrancy")]
-        update()
+        properties = [
+            Property<HSV, Float>(title: "Hue", keyPath: \HSV.hue),
+            Property<HSV, Float>(title: "Saturation", keyPath: \HSV.saturation),
+            Property<HSV, Float>(title: "Vibrancy", keyPath: \HSV.vibrancy)
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         

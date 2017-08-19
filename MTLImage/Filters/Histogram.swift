@@ -44,11 +44,7 @@ class Histogram: Filter {
         update()
         createHistogramView()
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         

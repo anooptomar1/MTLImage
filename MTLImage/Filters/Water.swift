@@ -59,19 +59,16 @@ class Water: Filter {
     public init() {
         super.init(functionName: "water")
         title = "Water"
-        properties = [Property(key: "speed",     title: "Speed"    ),
-                      Property(key: "frequency", title: "Frequency"),
-                      Property(key: "intensity", title: "Intensity"),
-                      Property(key: "emboss",    title: "Enboss"   ),
-                      Property(key: "delta",     title: "Delta"    ),
-                      Property(key: "intence",   title: "Intence"  )]
-        update()
+        properties = [
+            Property<Water, Float>(title: "Speed", keyPath: \Water.speed),
+            Property<Water, Float>(title: "Frequency", keyPath: \Water.frequency),
+            Property<Water, Float>(title: "Intensity", keyPath: \Water.intensity),
+            Property<Water, Float>(title: "Emboss", keyPath: \Water.emboss),
+            Property<Water, Float>(title: "Delta", keyPath: \Water.delta),
+            Property<Water, Float>(title: "Intence", keyPath: \Water.intence),
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     public override func process() {
         update()
         super.process()

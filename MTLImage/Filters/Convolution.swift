@@ -29,11 +29,7 @@ class Convolution: Filter {
         
         update()
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func configureCommandEncoder(_ commandEncoder: MTLComputeCommandEncoder) {
         if convolutionMatrixTexture == nil {
             let textureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .r32Float, width: 3, height: 3, mipmapped: false)

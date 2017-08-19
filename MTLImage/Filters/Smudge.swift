@@ -55,17 +55,14 @@ class Smudge: Filter {
     public init() {
         super.init(functionName: "smudge")
         title = "Smudge"
-        properties = [Property(key: "radius", title: "Radius"),
-                      Property(key: "force" , title: "Force"),
-                      Property(key: "location" , title: "Location" , propertyType: .point),
-                      Property(key: "direction", title: "Direction", propertyType: .point)]
-        update()
+        properties = [
+            Property<Smudge, Float>(title: "Radius", keyPath: \Smudge.radius),
+            Property<Smudge, Float>(title: "Force", keyPath: \Smudge.force),
+            Property<Smudge, CGPoint>(title: "Location", keyPath: \Smudge.location),
+            Property<Smudge, CGPoint>(title: "Direction", keyPath: \Smudge.direction),
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         

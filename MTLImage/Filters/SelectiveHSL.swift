@@ -38,25 +38,22 @@ class SelectiveHSL: Filter {
         super.init(functionName: "selectiveHSL")
         title = "Selective HSL"
         
-        let modeProperty = Property(key: "mode", title: "Mode", propertyType: .selection)
-        modeProperty.selectionItems = [0 : "Hue", 1 : "Saturation", 2 : "Luminance"]
+        let modeProperty = Property<SelectiveHSL, Int>(title: "Mode", keyPath: \SelectiveHSL.mode)
+//        modeProperty.selectionItems = [0 : "Hue", 1 : "Saturation", 2 : "Luminance"]
         
-        properties = [Property(key: "red"    , title: "Red"    ),
-                      Property(key: "orange" , title: "Orange" ),
-                      Property(key: "yellow" , title: "Yellow" ),
-                      Property(key: "green"  , title: "Green"  ),
-                      Property(key: "aqua"   , title: "Aqua"   ),
-                      Property(key: "blue"   , title: "Blue"   ),
-                      Property(key: "purple" , title: "Purple" ),
-                      Property(key: "magenta", title: "Magenta"),
-                      modeProperty]
-        update()
+        properties = [
+            Property<SelectiveHSL, Float>(title: "Red", keyPath: \SelectiveHSL.red),
+            Property<SelectiveHSL, Float>(title: "Orange", keyPath: \SelectiveHSL.orange),
+            Property<SelectiveHSL, Float>(title: "Yellow", keyPath: \SelectiveHSL.yellow),
+            Property<SelectiveHSL, Float>(title: "Green", keyPath: \SelectiveHSL.green),
+            Property<SelectiveHSL, Float>(title: "Aqua", keyPath: \SelectiveHSL.aqua),
+            Property<SelectiveHSL, Float>(title: "Blue", keyPath: \SelectiveHSL.blue),
+            Property<SelectiveHSL, Float>(title: "Purple", keyPath: \SelectiveHSL.purple),
+            Property<SelectiveHSL, Float>(title: "Magenta", keyPath: \SelectiveHSL.magenta),
+            modeProperty
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         

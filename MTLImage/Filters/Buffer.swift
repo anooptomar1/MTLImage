@@ -15,11 +15,7 @@ class Buffer: Filter {
         title = "Buffer"
         properties = []
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     public override func process() {
         
         guard let texture = input?.texture?.copy(device: device) else { return }

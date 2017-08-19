@@ -35,15 +35,12 @@ class HighlightShadow: Filter {
     public init() {
         super.init(functionName: "highlightShadow")
         title = "Highlight/Shadow"
-        properties = [Property(key: "highlights", title: "Highlights"),
-                      Property(key: "shadows"   , title: "Shadows")]
-        update()
+        properties = [
+            Property<HighlightShadow, Float>(title: "Highlights", keyPath: \HighlightShadow.highlights),
+            Property<HighlightShadow, Float>(title: "Shadows", keyPath: \HighlightShadow.shadows)
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         uniforms.highlights = highlights

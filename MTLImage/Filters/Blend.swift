@@ -134,22 +134,20 @@ class Blend: Filter {
         title = "Blend"
         uniforms.mix = 1.0 - mix
         
-        let blendModeProperty = Property(key: "blendMode", title: "Blend Mode", propertyType: .selection)
-        blendModeProperty.selectionItems = blendModes
+        let blendModeProperty = Property<Blend, Int>(title: "Blend Mode", keyPath: \Blend.blendMode)
+//        blendModeProperty.selectionItems = blendModes
         
-        let contentModeProperty = Property(key: "contentMode", title: "Content Mode", propertyType: .selection)
-        contentModeProperty.selectionItems = contentModes
+        let contentModeProperty = Property<Blend, UIViewContentMode>(title: "Content Mode", keyPath: \Blend.contentMode)
+//        contentModeProperty.selectionItems = contentModes
         
-        properties = [Property(key: "blendImage", title: "Blend Image", propertyType: .image),
-                      Property(key: "mix", title: "Mix"),
-                      blendModeProperty, contentModeProperty]
-        update()
+        properties = [
+            Property<Blend, UIImage?>(title: "Blend Image", keyPath: \Blend.blendImage),
+            Property<Blend, Float>(title: "Mix", keyPath: \Blend.mix),
+            blendModeProperty,
+            contentModeProperty
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         uniforms.mix = mix

@@ -42,16 +42,12 @@ class Crop: Filter {
     public init() {
         super.init(functionName: "crop")
         title = "Crop"
-        properties = [Property(key: "cropRegion", title: "Crop Region", propertyType: .rect),
-                      Property(key: "fit"       , title: "Fit"        , propertyType: .bool)]
-        
-        update()
+        properties = [
+            Property<Crop, CGRect>(title: "Crop Region", keyPath: \Crop.cropRegion),
+            Property<Crop, Bool>(title: "Fit", keyPath: \Crop.fit)
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
 

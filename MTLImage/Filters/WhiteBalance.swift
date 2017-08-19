@@ -35,13 +35,11 @@ class WhiteBalance: Filter {
     public init() {
         super.init(functionName: "whiteBalance")
         title = "White Balance"
-        properties = [Property(key: "temperature", title: "Temperature"),
-                      Property(key: "tint"       , title: "Tint"       )]
+        properties = [
+            Property<WhiteBalance, Float>(title: "Temperature", keyPath: \WhiteBalance.temperature),
+            Property<WhiteBalance, Float>(title: "Tint", keyPath: \WhiteBalance.tint)
+        ]
         update()
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
     }
     
     override func update() {

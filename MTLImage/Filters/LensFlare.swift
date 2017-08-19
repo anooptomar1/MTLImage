@@ -62,18 +62,15 @@ class LensFlare: Filter {
     public init() {
         super.init(functionName: "lensFlare")
         title = "Lens Flare"
-        properties = [Property(key: "color"     , title: "Color"   , propertyType: .color),
-                      Property(key: "center"    , title: "Center"  , propertyType: .point),
-                      Property(key: "angle"     , title: "Angle"   , propertyType: .point),
-                      Property(key: "showSun"   , title: "Show Sun", propertyType: .bool ),
-                      Property(key: "brightness", title: "Brightness")]
-        update()
+        properties = [
+            Property<LensFlare, UIColor>(title: "Color", keyPath: \LensFlare.color),
+            Property<LensFlare, CGPoint>(title: "Center", keyPath: \LensFlare.center),
+            Property<LensFlare, CGPoint>(title: "Angle", keyPath: \LensFlare.angle),
+            Property<LensFlare, Bool>(title: "Show Sun", keyPath: \LensFlare.showSun),
+            Property<LensFlare, Float>(title: "Brightness", keyPath: \LensFlare.brightness)
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         

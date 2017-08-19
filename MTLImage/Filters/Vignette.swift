@@ -62,17 +62,14 @@ class Vignette: Filter {
     public init() {
         super.init(functionName: "vignette")
         title = "Vignette"
-        properties = [Property(key: "center", title: "Center", propertyType: .point),
-                      Property(key: "color" , title: "Color" , propertyType: .color),
-                      Property(key: "start" , title: "Start" ),
-                      Property(key: "end"   , title: "End"   )]
-        update()
+        properties = [
+            Property<Vignette, CGPoint>(title: "Center", keyPath: \Vignette.center),
+            Property<Vignette, UIColor>(title: "Color", keyPath: \Vignette.color),
+            Property<Vignette, Float>(title: "Start", keyPath: \Vignette.start),
+            Property<Vignette, Float>(title: "End", keyPath: \Vignette.end)
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override public var needsUpdate: Bool {
         didSet {
             if needsUpdate == true { update() }

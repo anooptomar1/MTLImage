@@ -8,13 +8,34 @@
 
 import UIKit
 
+public protocol PropertyBase {
+    
+//    associatedtype ClassType
+//    associatedtype ValueType
+    
+    var title: String { get set }
+//    var keyPath: ReferenceWritableKeyPath<ClassType, ValueType> { get set }
+    var range: (Float, Float, Float) { get set }
+    
+    var valueType: Any.Type { get }
+    var rootType: Any.Type { get }
+}
+
 public
-struct Property<C, V> {
+struct Property<C, V>: PropertyBase {
     
     public var title: String
     public var keyPath: ReferenceWritableKeyPath<C, V>
     public var range: (Float, Float, Float) = (0.0, 0.5, 1.0)
  
+    public var valueType: Any.Type {
+        return type(of: keyPath).valueType
+    }
+    
+    public var rootType: Any.Type {
+        return type(of: keyPath).rootType
+    }
+    
     public init(title: String, keyPath: ReferenceWritableKeyPath<C, V>) {
         self.title = title
         self.keyPath = keyPath

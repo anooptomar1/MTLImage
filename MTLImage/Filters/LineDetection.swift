@@ -35,18 +35,14 @@ class LineDetection: Filter {
     public init() {
         super.init(functionName: "lineDetection")
         title = "Line Detection"
-        properties = [Property(key: "sensitivity", title: "Sensitivity")]
+        properties = [Property<LineDetection, Float>(title: "Sensitivity", keyPath: \LineDetection.sensitivity)]
         
         sobelEdgeDetectionThreshold.addTarget(self)
         input = sobelEdgeDetectionThreshold
         
         update()
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     
     override func update() {
         if self.input == nil { return }

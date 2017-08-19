@@ -51,12 +51,13 @@ class Mask: Filter {
         
         title = "Mask"
         
-        properties = [Property(key: "point"    , title: "Point"      , propertyType: .point),
-                      Property(key: "add"      , title: "Add"        , propertyType: .bool),
-                      Property(key: "brushSize", title: "Brush Size"),
-                      Property(key: "hardness" , title: "Hardness"  )]
-                      
-        
+        properties = [
+            Property<Mask, CGPoint>(title: "Point", keyPath: \Mask.point),
+            Property<Mask, Bool>(title: "Add", keyPath: \Mask.add),
+            Property<Mask, Float>(title: "Brush Size", keyPath: \Mask.brushSize),
+            Property<Mask, Float>(title: "Hardness", keyPath: \Mask.hardness)
+        ]
+
         mask = [Float](repeating: 1.0, count: Int(size.width * size.height))
             //[[Float]](repeating: [Float](repeating: 1.0, count: Int(size.width)), count: Int(size.height))
         

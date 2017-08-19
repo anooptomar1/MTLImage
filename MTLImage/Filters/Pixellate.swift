@@ -30,14 +30,10 @@ class Pixellate: Filter {
     public init() {
         super.init(functionName: "pixellate")
         title = "Pixellate"
-        properties = [Property(key: "dotRadius", title: "Dot Radius")]
+        properties = [Property<Pixellate, Float>(title: "Dot Radius", keyPath: \Pixellate.dotRadius)]
         update()
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         

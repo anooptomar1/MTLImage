@@ -21,11 +21,7 @@ class RollingAverage: Filter {
         title = "Rolling Average"
         properties = []
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         super.update()
         uniforms.currentBufferCount = Float(textureQueue.count)

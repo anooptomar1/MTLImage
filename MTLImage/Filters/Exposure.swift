@@ -29,14 +29,10 @@ class Exposure: Filter {
     public init() {
         super.init(functionName: "exposure")
         title = "Exposure"
-        properties = [Property(key: "exposure", title: "Exposure")]
+        properties = [Property<Exposure, Float>(title: "Exposure", keyPath: \Exposure.exposure)]
         update()
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         uniforms.exposure = Tools.convert(exposure, oldMin: 0.0, oldMid: 0.5, oldMax: 1.0, newMin: -1.5, newMid: 0.0, newMax: 2.0)

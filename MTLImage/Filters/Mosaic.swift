@@ -27,14 +27,9 @@ class Mosaic: Filter {
     public init() {
         super.init(functionName: "mosaic")
         title = "Mosaic"
-        properties = [Property(key: "intensity", title: "Intensity")]
-        update()
+        properties = [Property<Mosaic, Float>(title: "Intensity", keyPath: \Mosaic.intensity)]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         uniforms.intensity = intensity * 50

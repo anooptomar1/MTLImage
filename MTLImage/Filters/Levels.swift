@@ -66,18 +66,15 @@ class Levels: Filter {
     public init() {
         super.init(functionName: "levels")
         title = "Levels"
-        properties = [Property(key: "min"   , title: "Minimum"       ),
-                      Property(key: "mid"   , title: "Middle"        ),
-                      Property(key: "max"   , title: "Maximum"       ),
-                      Property(key: "minOut", title: "Minimum Output"),
-                      Property(key: "maxOut", title: "Maximum Output")]
-        update()
+        properties = [
+            Property<Levels, Float>(title: "Minimum", keyPath: \Levels.min),
+            Property<Levels, Float>(title: "Middle", keyPath: \Levels.mid),
+            Property<Levels, Float>(title: "Maximum", keyPath: \Levels.max),
+            Property<Levels, Float>(title: "Minimum Output", keyPath: \Levels.minOut),
+            Property<Levels, Float>(title: "Maximum Output", keyPath: \Levels.maxOut)
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         uniforms.min = min

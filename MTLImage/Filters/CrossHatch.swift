@@ -35,15 +35,12 @@ class CrossHatch: Filter {
     public init() {
         super.init(functionName: "crossHatch")
         title = "Cross Hatch"
-        properties = [ Property(key: "crossHatchSpacing", title: "Cross Hatch Spacing"),
-                       Property(key: "lineWidth"        , title: "Line Width"         )]
-        update()
+        properties = [
+            Property<CrossHatch, Float>(title: "Spacing", keyPath: \CrossHatch.crossHatchSpacing),
+            Property<CrossHatch, Float>(title: "Line Width", keyPath: \CrossHatch.lineWidth)
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         
 //        guard input != nil else {

@@ -34,7 +34,7 @@ class HarrisCornerDetectionFilterGroup: FilterGroup {
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        fatalError("init(coder:) has not been implemented")
     }
     
     func updateCorners() {
@@ -105,11 +105,7 @@ class HarrisCornerDetectionOutput: Filter {
         properties = []
         update()
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         uniformsBuffer = device.makeBuffer(bytes: &uniforms, length: MemoryLayout<HarrisCornerDetectionOutputUniforms>.size, options: .cpuCacheModeWriteCombined)
@@ -151,16 +147,12 @@ class HarrisCornerDetection: Filter {
     public init() {
         super.init(functionName: "harrisCornerDetection")
         title = "Harris Corner Detection"
-        properties = [Property(key: "sensitivity", title: "Sensitivity"),
-                      Property(key: "threshold"  , title: "Threshold"  )]
-        
-        update()
+        properties = [
+            Property<HarrisCornerDetection, Float>(title: "Sensitivity", keyPath: \HarrisCornerDetection.sensitivity),
+            Property<HarrisCornerDetection, Float>(title: "Threshold", keyPath: \HarrisCornerDetection.threshold)
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         uniforms.sensitivity = sensitivity

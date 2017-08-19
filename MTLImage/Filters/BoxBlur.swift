@@ -40,10 +40,7 @@ class BoxBlur: MPS {
         (kernel as! MPSImageBox).edgeMode = .clamp
         
         title = "Box Blur"
-        properties = [Property(key: "radius" , title: "Radius")]
+        properties = [Property<BoxBlur, Float>(title: "Radius", keyPath: \BoxBlur.radius)]
     }
     
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
 }

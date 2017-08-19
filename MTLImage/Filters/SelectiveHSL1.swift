@@ -45,11 +45,7 @@ class SelectiveHSL1: Filter {
                       Property(key: "magenta", title: "Magenta")]
         update()
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         

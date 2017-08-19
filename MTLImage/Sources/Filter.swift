@@ -8,12 +8,8 @@
 
 import UIKit
 
-func ==(left: Filter, right: Filter) -> Bool {
-    return left.identifier == right.identifier
-}
-
 public
-class Filter: MTLObject, NSCoding {
+class Filter: MTLObject {
     
     var propertyValues = [String : Any]()
     var pipeline: MTLComputePipelineState!
@@ -72,8 +68,9 @@ class Filter: MTLObject, NSCoding {
         }
     }
     
+    
     var functionName: String!
-    public var properties = [Property<Any, Any>]()
+    public var properties = [Any]()
     
     public var originalImage: UIImage? {
         get {
@@ -93,9 +90,10 @@ class Filter: MTLObject, NSCoding {
         }
     }
     
+    // TODO: Fix this
     public func reset() {
         for property in properties {
-            self[property] = 0.5
+//            self[property] = 0.5
         }
     }
     
@@ -190,33 +188,33 @@ class Filter: MTLObject, NSCoding {
     
     
     
-    func updatePropertyValues() {
-        propertyValues.removeAll()
-        for property in properties {
-            propertyValues[property.key] = value(forKey: property.key)
-        }
-    }
-    
-    public override func copy() -> Any {
-        
-        let filter = try! MTLImage.filter(title.lowercased()) as! Filter
-        
-        filter.functionName = functionName
-        filter.title = title
-        filter.index = index
-        filter.properties = properties
-        
-        updatePropertyValues()
-        filter.propertyValues = propertyValues
-        
-        for property in properties {
-            filter.setValue(propertyValues[property.key], forKey: property.key)
-        }
-        
-        filter.uniformsBuffer = uniformsBuffer
-        
-        return filter
-    }
+//    func updatePropertyValues() {
+//        propertyValues.removeAll()
+//        for property in properties {
+//            propertyValues[property.key] = value(forKey: property.key)
+//        }
+//    }
+//    
+//    public override func copy() -> Any {
+//        
+//        let filter = try! MTLImage.filter(title.lowercased()) as! Filter
+//        
+//        filter.functionName = functionName
+//        filter.title = title
+//        filter.index = index
+//        filter.properties = properties
+//        
+//        updatePropertyValues()
+//        filter.propertyValues = propertyValues
+//        
+//        for property in properties {
+//            filter.setValue(propertyValues[property.key], forKey: property.key)
+//        }
+//        
+//        filter.uniformsBuffer = uniformsBuffer
+//        
+//        return filter
+//    }
     
     
     var threadgroupCounts = MTLSizeMake(8, 8, 1)
@@ -236,28 +234,42 @@ class Filter: MTLObject, NSCoding {
     
     //    MARK: - NSCoding
     
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(title, forKey: "title")
-        aCoder.encode(functionName, forKey: "functionName")
-        aCoder.encode(identifier, forKey: "identifier")
-        aCoder.encode(index, forKey: "index")
-        updatePropertyValues()
-        aCoder.encode(propertyValues, forKey: "propertyValues")
-        aCoder.encode(properties, forKey: "properties")
-    }
-    
-    public required init?(coder aDecoder: NSCoder) {
-        super.init()
-        
-        functionName = aDecoder.decodeObject(forKey: "functionName") as! String
-        identifier   = aDecoder.decodeObject(forKey: "identifier") as! String
-        properties   = aDecoder.decodeObject(forKey: "properties") as! [Property]
-        propertyValues = aDecoder.decodeObject(forKey: "propertyValues") as! [String : AnyObject]
-        for property in properties {
-            setValue(propertyValues[property.key], forKey: property.key)
-        }
-        title = aDecoder.decodeObject(forKey: "title") as! String
-        index = aDecoder.decodeInteger(forKey: "index")
-    }
+//    public func encode(with aCoder: NSCoder) {
+//        aCoder.encode(title, forKey: "title")
+//        aCoder.encode(functionName, forKey: "functionName")
+//        aCoder.encode(identifier, forKey: "identifier")
+//        aCoder.encode(index, forKey: "index")
+//        updatePropertyValues()
+//        aCoder.encode(propertyValues, forKey: "propertyValues")
+//        aCoder.encode(properties, forKey: "properties")
+//    }
+//    
+//    public required init?(coder aDecoder: NSCoder) {
+//        super.init()
+//        
+//        functionName = aDecoder.decodeObject(forKey: "functionName") as! String
+//        identifier   = aDecoder.decodeObject(forKey: "identifier") as! String
+//        properties   = aDecoder.decodeObject(forKey: "properties") as! [Property]
+//        propertyValues = aDecoder.decodeObject(forKey: "propertyValues") as! [String : AnyObject]
+//        for property in properties {
+//            setValue(propertyValues[property.key], forKey: property.key)
+//        }
+//        title = aDecoder.decodeObject(forKey: "title") as! String
+//        index = aDecoder.decodeInteger(forKey: "index")
+//    }
 }
+
+
+
+public func ==(left: Filter, right: Filter) -> Bool {
+    return left.identifier == right.identifier
+}
+
+public protocol FilterValueType {
+    
+}
+
+extension Float: FilterValueType {}
+
+
 

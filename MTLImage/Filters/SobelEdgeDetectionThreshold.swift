@@ -34,19 +34,17 @@ class SobelEdgeDetectionThreshold: Filter {
     public init() {
         super.init(functionName: "sobelEdgeDetectionThreshold")
         title = "Sobel Edge Detection Threshold"
-        properties = [Property(key: "threshold", title: "Threshold"),
-                      Property(key: "edgeStrength", title: "Edge Strength")]
+        properties = [
+            Property<SobelEdgeDetectionThreshold, Float>(title: "Threshold", keyPath: \SobelEdgeDetectionThreshold.threshold),
+            Property<SobelEdgeDetectionThreshold, Float>(title: "Edge Strength", keyPath: \SobelEdgeDetectionThreshold.edgeStrength)
+        ]
         
         sobelEdgeDetectionFilter.addTarget(self)
         input = sobelEdgeDetectionFilter
         
         update()
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         

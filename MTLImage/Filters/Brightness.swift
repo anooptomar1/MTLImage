@@ -25,15 +25,9 @@ class Brightness: Filter {
     public init() {
         super.init(functionName: "brightness")
         title = "Brightness"
-        properties = [Property(key: "brightness", title: "Brightness")]
-//        properties = [Property(keyPath: \Brightness.brightness, title: "Brightness")]
-        update()
+        properties = [Property<Brightness, Float>(title: "Brightness", keyPath: \Brightness.brightness)]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         uniforms.brightness = brightness * 2.0 - 1.0

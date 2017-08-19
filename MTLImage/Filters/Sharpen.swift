@@ -26,14 +26,11 @@ class Sharpen: Filter {
     public init() {
         super.init(functionName: "sharpen")
         title = "Sharpen"
-        properties = [Property(key: "sharpness", title: "Sharpness")]
-        update()
+        properties = [
+            Property<Sharpen, Float>(title: "Sharpness", keyPath: \Sharpen.sharpness)
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         uniforms.sharpness = sharpness * 4.0

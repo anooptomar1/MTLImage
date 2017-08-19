@@ -29,7 +29,7 @@ class DepthBlend: Filter {
         super.init(functionName: "depthBlend")
         blur.sigma = 0.1
         title = "Depth Blend"
-        properties = [Property(key: "lowerThreshold", title: "Lower Threshold")]
+        properties = [Property<DepthBlend, Float>(title: "Lower Threshold", keyPath: \DepthBlend.lowerThreshold)]
     }
     
     public required init?(coder aDecoder: NSCoder) {

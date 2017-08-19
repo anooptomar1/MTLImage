@@ -58,16 +58,13 @@ class Scatter: Filter {
         super.init(functionName: "scatter")
         title = "Scatter"
         
-        properties = [Property(key: "radius", title: "Radius"),
-                      Property(key: "scale", title: "Scale"),
-                      Property(key: "noiseImage", title: "Noise Image", propertyType: .image)]
-        update()
+        properties = [
+            Property<Scatter, Float>(title: "Radius", keyPath: \Scatter.radius),
+            Property<Scatter, Float>(title: "Scale", keyPath: \Scatter.scale),
+            Property<Scatter, UIImage?>(title: "Noise Image", keyPath: \Scatter.noiseImage)
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         uniforms.radius = radius * 40

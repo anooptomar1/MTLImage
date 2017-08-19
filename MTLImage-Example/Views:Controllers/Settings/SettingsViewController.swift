@@ -16,7 +16,7 @@ SettingsCellDelegate, PickerCellDelegate, ToggleCellDelegate, UIImagePickerContr
     @IBOutlet weak var emptyLabel: UILabel!
     
     var filter: Filter!
-    var touchProperty: Property?
+    var touchProperty: PropertyBase?
     var mainViewController: MainViewController!
     
     override func viewDidLoad() {
@@ -27,8 +27,8 @@ SettingsCellDelegate, PickerCellDelegate, ToggleCellDelegate, UIImagePickerContr
         
         mainViewController = self.navigationController?.parent as! MainViewController
     
-        for property: Property in filter.properties {
-            if property.propertyType == .point {
+        for property in filter.properties {
+            if property is Property<Any, CGPoint> {
                 touchProperty = property
                 break;
             }
@@ -133,20 +133,18 @@ SettingsCellDelegate, PickerCellDelegate, ToggleCellDelegate, UIImagePickerContr
         else if cell.reuseIdentifier == "toggleCell" {
             
             let toggleCell: ToggleCell = cell as! ToggleCell
-            toggleCell.titleLabel.text = filter.properties[indexPath.row].title
+            toggleCell.titleLabel.text = (filter.properties[indexPath.row] as? Property<Any, Any>)?.title
             toggleCell.delegate = self
             
-            if let key = filter.properties[indexPath.row].key {
-                if let isOn = filter.value(forKey: key) as? Bool {
-                    toggleCell.toggleSwitch.isOn = isOn
-                }
+            if let property = filter.properties[indexPath.row] as? Property<Filter, Bool> {
+                toggleCell.toggleSwitch.isOn = filter[property]
             }
-            
         }
         else if cell.reuseIdentifier == "pickerCell" {
             let pickerCell: PickerCell = cell as! PickerCell
-            pickerCell.titleLabel.text = filter.properties[indexPath.row].title
-            pickerCell.selectionItems  = filter.properties[indexPath.row].selectionItems!
+            pickerCell.titleLabel.text = (filter.properties[indexPath.row] as? Property<Any, Any>)?.title
+            // TODO: HERE
+//            pickerCell.selectionItems  = filter.properties[indexPath.row].selectionItems!
             pickerCell.delegate = self
         }
     }
@@ -173,16 +171,14 @@ SettingsCellDelegate, PickerCellDelegate, ToggleCellDelegate, UIImagePickerContr
     
     func settingsCellSliderValueChanged(_ sender: SettingsCell, value: Float) {
         let indexPath = tableView.indexPath(for: sender)
-
-        let property: Property = filter.properties[(indexPath?.row)!]
         
-        if property.propertyType == .value {
+        if let property = filter.properties[indexPath!.row] as? Property<Filter, Float> {
             sender.valueLabel.text = String(format: "%.2f", value)
-            filter.setValue(value, forKey: property.key)
+            filter[property] = value
         }
-        else if property.propertyType == .color {
+        else if let property = filter.properties[indexPath!.row] as? Property<Filter, UIColor> {
             sender.valueLabel.text = "-"
-            filter.setValue(sender.currentColor(), forKey: property.key)
+            filter[property] = sender.currentColor()
         }
 
     }
@@ -191,25 +187,27 @@ SettingsCellDelegate, PickerCellDelegate, ToggleCellDelegate, UIImagePickerContr
     
     func pickerCellDidSelectItem(_ sender: PickerCell, index: Int) {
         let indexPath = tableView.indexPath(for: sender)
-        let property: Property = filter.properties[(indexPath?.row)!]
-        filter.setValue(index, forKey: property.key)
+        if let property = filter.properties[indexPath!.row] as? Property<Filter, Int> {
+            filter[property] = index
+        }
     }
     
     // MARK: ToggleCell Delegate
     
     func toggleValueChanged(sender: ToggleCell, isOn: Bool) {
         let indexPath = tableView.indexPath(for: sender)
-        let property: Property = filter.properties[(indexPath?.row)!]
-        filter.setValue(isOn, forKey: property.key)
+        if let property = filter.properties[indexPath!.row] as? Property<Filter, Bool> {
+            filter[property] = isOn
+        }
     }
     
 //    MARK: ImagePickerController Delegate
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        for property in filter.properties {
-            if property.propertyType == .image {
+        for prop in filter.properties {
+            if let property = prop as? Property<Filter, UIImage> {
                 if let image: UIImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-                    filter.setValue(image, forKey: property.key)
+                    filter[property] = image
                     dismiss(animated: true, completion: nil)
                     return
                 }

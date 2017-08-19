@@ -35,15 +35,12 @@ class Distortion: Filter {
     public init() {
         super.init(functionName: "distortion")
         title = "Distortion"
-        properties = [Property(key: "x", title: "X"),
-                      Property(key: "y", title: "Y")]
-        update()
+        properties = [
+            Property<Distortion, Float>(title: "X", keyPath: \Distortion.x),
+            Property<Distortion, Float>(title: "Y", keyPath: \Distortion.y)
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         uniforms.centerX = x

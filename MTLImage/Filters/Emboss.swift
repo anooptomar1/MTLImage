@@ -21,13 +21,12 @@ class Emboss: Convolution {
     override init() {
         super.init()
         title = "Emboss"
-        properties = [Property(key: "intensity", title: "Intensity")]
+        
+        properties = [
+            Property<Emboss, Float>(title: "Intensity", keyPath: \Emboss.intensity)
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         

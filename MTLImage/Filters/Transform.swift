@@ -48,15 +48,12 @@ class Transform: Filter {
     public init() {
         super.init(functionName: "transform")
         title = "Transform"
-        properties = [Property(key: "scale", title: "Scale"),
-                      Property(key: "angle", title: "Rotation")]
-        update()
+        properties = [
+            Property<Transform, Float>(title: "Scale", keyPath: \Transform.scale),
+            Property<Transform, Float>(title: "Angle", keyPath: \Transform.angle)
+        ]
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         updateUniforms(uniforms: uniforms)

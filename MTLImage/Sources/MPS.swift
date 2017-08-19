@@ -17,11 +17,7 @@ class MPS: Filter {
     public override init(functionName: String?) {
         super.init(functionName: nil)
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     public override func process() {
         
         guard let inputTexture = input?.texture,

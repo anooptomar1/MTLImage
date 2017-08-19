@@ -35,13 +35,8 @@ class Tent: MPS {
     
     func commonInit() {
         title = "Tent"
-        properties = [Property(key: "radius" , title: "Radius")]
+        properties = [Property<Tent, Float>(title: "Radius", keyPath: \Tent.radius)]
         radius = 0.5
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-
     
 }

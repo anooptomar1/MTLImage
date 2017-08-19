@@ -27,14 +27,10 @@ class Hue: Filter {
     public init() {
         super.init(functionName: "hue")
         title = "Hue"
-        properties = [Property(key: "hue", title: "Hue")]
+        properties = [Property<Hue, Float>(title: "Hue", keyPath: \Hue.hue)]
         update()
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+
     override func update() {
         if self.input == nil { return }
         uniforms.hue = fmodf(hue * 360.0, 360.0) * (Float.pi / 180.0)
